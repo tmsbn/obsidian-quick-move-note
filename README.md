@@ -4,7 +4,8 @@ The Obsidian Quick Move Plugin allows you to quickly move notes to a specified f
 
 ## Features
 
-- Configure a target folder in the settings.
+- Configure a custom name and target folder for custom command.
+- Add multiple configurations.
 - Use a command to instantly move the current note to the configured folder.
 - Streamline your workflow by organizing notes efficiently.
 
@@ -23,15 +24,18 @@ This plugin is particularly useful if you have a workflow where you move notes t
 1. Open the settings page.
 2. Navigate to the Quick Move Plugin settings.
 3. Click `Add Configuration' to add a new configuration
-4. Set your desired name and target folder 
+4. Set your desired name and target folder for your command. 
 5. Click 'Save'
 
-![Settinsg page](/media/command_palette.png "Optional Title")
+![Settinsg page](/media/settings_page.png "Custom Commands")
+You can add multile configuration according to your workflow!
 
 ## Usage
 
 1. Open the note you want to move.
 2. Invoke the Quick Move command from the command palette.
 3. The note will be moved to the configured folder.
+
+![Settinsg page](/media/command_palette.png "Custom Commands")
 
 Enjoy a more organized and efficient note-taking experience with the Obsidian Quick Move Plugin!

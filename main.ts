@@ -175,8 +175,7 @@ class MoveFileSettingTab extends PluginSettingTab {
 
 				const setting = new Setting(containerEl).addButton((button) => {
 					button
-						.setClass("save-btn")
-						.setButtonText("Create")
+						.setButtonText("Save")
 						.onClick(async () => {
 							
 							// Remove configuraiton if exists
