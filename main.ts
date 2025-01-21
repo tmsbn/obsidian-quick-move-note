@@ -165,8 +165,6 @@ class MoveFileSettingTab extends PluginSettingTab {
 							})
 					);
 
-				new Setting(containerEl).addExtraButton;
-
 				const setting = new Setting(containerEl).addButton((button) => {
 					button
 						.setClass("save-btn")
