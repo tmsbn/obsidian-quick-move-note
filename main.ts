@@ -1,5 +1,6 @@
 import {
 	App,
+	Command,
 	Notice,
 	Plugin,
 	PluginSettingTab,
@@ -48,8 +49,8 @@ export default class MoveFilePlugin extends Plugin {
 		await this.saveData(this.settings);
 	}
 
-	async addCustomCommand(moveFileConfig: MoveFileConfig, index: number) {
-		const command = this.addCommand({
+	async addCustomCommand(moveFileConfig: MoveFileConfig, index: number) : Promise<Command> {
+		return this.addCommand({
 			id: this.generate16CharHash(moveFileConfig.commandName + index),
 			name: moveFileConfig.commandName,
 			checkCallback: (checking: boolean) => {
@@ -64,7 +65,6 @@ export default class MoveFilePlugin extends Plugin {
 				return false;
 			},
 		});
-		moveFileConfig.commandId = command.id;
 	}
 
 	async moveFile(file: TFile, targetFolderPath: string) {
@@ -103,10 +103,12 @@ export default class MoveFilePlugin extends Plugin {
 
 class MoveFileSettingTab extends PluginSettingTab {
 	plugin: MoveFilePlugin;
+	app: App;
 
 	constructor(app: App, plugin: MoveFilePlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
+		this.app = app;
 	}
 
 	display(): void {
@@ -119,7 +121,8 @@ class MoveFileSettingTab extends PluginSettingTab {
 		});
 
 		new Setting(containerEl)
-			.setName("Add a new quick move configuration")
+			.setName("Add a new Quick Move configuration")
+			.setDesc("Create a command to quickly move to files to a particular folder")
 			.addButton((button) => {
 				button.setButtonText("Add Config").onClick(async () => {
 					this.plugin.settings.moveFileConfigs.push({
@@ -168,12 +171,16 @@ class MoveFileSettingTab extends PluginSettingTab {
 				const setting = new Setting(containerEl).addButton((button) => {
 					button
 						.setClass("save-btn")
-						.setButtonText("Save")
+						.setButtonText("Create")
 						.onClick(async () => {
-							await this.plugin.addCustomCommand(
+							const command = await this.plugin.addCustomCommand(
 								moveFileConfig,
 								index
 							);
+
+							// We need to extract the command ID from the full command ID
+							moveFileConfig.commandId = command.id.split(":")[1];
+							console.log(`Adding command with ID: ${moveFileConfig.commandId}`);
 							await this.plugin.saveSettings();
 							new Notice(
 								`Saved "${moveFileConfig.commandName}" configuration`
@@ -189,13 +196,14 @@ class MoveFileSettingTab extends PluginSettingTab {
 								index,
 								1
 							);
+							console.log(`Removing command with ID: ${moveFileConfig.commandId}`);
 							this.plugin.removeCommand(moveFileConfig.commandId);
 							this.plugin.saveSettings();
 							this.display();
 						});
 				});
 
-				// Add the commands to the plugin
+				// Add existing commands to Obsidian
 				this.plugin.addCustomCommand(moveFileConfig, index);
 			}
 		);

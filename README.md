@@ -26,6 +26,8 @@ This plugin is particularly useful if you have a workflow where you move notes t
 4. Set your desired name and target folder 
 5. Click 'Save'
 
+![Settinsg page](/media/command_palette.png "Optional Title")
+
 ## Usage
 
 1. Open the note you want to move.
