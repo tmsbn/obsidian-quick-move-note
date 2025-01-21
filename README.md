@@ -22,7 +22,9 @@ This plugin is particularly useful if you have a workflow where you move notes t
 
 1. Open the settings page.
 2. Navigate to the Quick Move Plugin settings.
-3. Set your desired target folder.
+3. Click `Add Configuration' to add a new configuration
+4. Set your desired name and target folder 
+5. Click 'Save'
 
 ## Usage
 
