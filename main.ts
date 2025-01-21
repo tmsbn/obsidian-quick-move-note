@@ -178,12 +178,10 @@ class MoveFileSettingTab extends PluginSettingTab {
 						.setClass("save-btn")
 						.setButtonText("Create")
 						.onClick(async () => {
+							
 							// Remove configuraiton if exists
 							if (moveFileConfig.commandId) {
-								this.plugin.addCustomCommand(
-									moveFileConfig,
-									index
-								);
+								this.plugin.removeCommand(moveFileConfig.commandId);
 							}
 
 							if (moveFileConfig.commandName === "" || moveFileConfig.sourceFolderPath === "") {
