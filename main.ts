@@ -12,6 +12,7 @@ import {
 
 interface MoveFileConfig {
 	sourceFolderPath: string;
+	commandName: string;
 }
 
 interface MoveFilePluginSettings {
@@ -21,6 +22,7 @@ interface MoveFilePluginSettings {
 const DEFAULT_SETTINGS: MoveFilePluginSettings = {
 	moveFileConfig: {
 		sourceFolderPath: "",
+		commandName: "",
 	},
 };
 
@@ -64,6 +66,26 @@ export default class MoveFilePlugin extends Plugin {
 		await this.saveData(this.settings);
 	}
 
+	async addCustomCommand(name: string) {
+
+		this.addCommand({
+			id: "Move-File-to-Specific-Folder-Command",
+			name: name,
+			checkCallback: (checking: boolean) => {
+				const targetFolderPath =
+					this.settings.moveFileConfig.sourceFolderPath;
+				const activeFile = this.app.workspace.getActiveFile();
+				if (activeFile) {
+					if (!checking) {
+						this.moveFile(activeFile, targetFolderPath);
+					}
+					return true;
+				}
+				return false;
+			},
+		});
+	}
+
 	async moveFile(file: TFile, targetFolderPath: string) {
 		const targetFolder =
 			this.app.vault.getAbstractFileByPath(targetFolderPath);
@@ -105,6 +127,22 @@ class MoveFileSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		new Setting(containerEl)
+		.setName("Name")
+		.setDesc("The command name")
+		.addText((text) =>
+			text
+				.setPlaceholder("Enter the label of the command")
+				.setValue(
+					this.plugin.settings.moveFileConfig.commandName
+				)
+				.onChange(async (value) => {
+					this.plugin.settings.moveFileConfig.commandName =
+						value;
+				})
+		);
+
+
+		new Setting(containerEl)
 			.setName("Move File Settings")
 			.setDesc("Path to your completed folder")
 			.addText((text) =>
@@ -116,8 +154,18 @@ class MoveFileSettingTab extends PluginSettingTab {
 					.onChange(async (value) => {
 						this.plugin.settings.moveFileConfig.sourceFolderPath =
 							value;
-						await this.plugin.saveSettings();
 					})
 			);
+
+		new Setting(containerEl)
+		.addButton((button) =>{
+			button.setButtonText("Save")
+			.onClick(async () => {
+
+				await this.plugin.addCustomCommand(this.plugin.settings.moveFileConfig.commandName);
+				await this.plugin.saveSettings();
+				new Notice(`Saved Quick Move`);
+			});
+		});
 	}
 }
