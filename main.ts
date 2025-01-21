@@ -121,18 +121,20 @@ class MoveFileSettingTab extends PluginSettingTab {
 		});
 
 		new Setting(containerEl)
-			.setName("Add a new Quick Move configuration")
+			.setName("Add a configuration")
 			.setDesc("Create a command to quickly move to files to a particular folder")
 			.addButton((button) => {
-				button.setButtonText("Add Config").onClick(async () => {
+				button
+				.setClass("add-config-btn")
+				.setButtonText("Add Config")
+				.onClick(async () => {
 					this.plugin.settings.moveFileConfigs.push({
 						commandName: "",
 						sourceFolderPath: "",
 						commandId: "",
 					});
-					await this.plugin.saveSettings();
 					this.display();
-					new Notice(`Added Quick Move`);
+					new Notice(`Added Quick Move Configuration`);
 				});
 			});
 
@@ -144,7 +146,7 @@ class MoveFileSettingTab extends PluginSettingTab {
 
 				new Setting(containerEl)
 					.setName("Name")
-					.setDesc("Example: Mark as completed")
+					.setDesc("Name of th command to add. Eg: Mark as completed")
 					.addText((text) =>
 						text
 							.setPlaceholder("Cmmand name")
@@ -156,11 +158,11 @@ class MoveFileSettingTab extends PluginSettingTab {
 
 				new Setting(containerEl)
 					.setName("Path")
-					.setDesc("Example: /path/to/completed")
+					.setDesc("Relative path to the destination folder")
 					.addText((text) =>
 						text
 							.setPlaceholder(
-								"Enter path to your completed folder"
+								"Path to Folder"
 							)
 							.setValue(moveFileConfig.sourceFolderPath)
 							.onChange(async (value) => {
@@ -173,6 +175,19 @@ class MoveFileSettingTab extends PluginSettingTab {
 						.setClass("save-btn")
 						.setButtonText("Create")
 						.onClick(async () => {
+
+							// Remove configuraiton if exists
+							if(moveFileConfig.commandId) {
+								this.plugin.addCustomCommand(moveFileConfig, index);
+							}
+
+							if(moveFileConfig.commandName === "" || moveFileConfig.sourceFolderPath === "") {
+								new Notice(
+									`Invalid configuration! Please fill in all fields.`
+								);
+								return
+							}
+
 							const command = await this.plugin.addCustomCommand(
 								moveFileConfig,
 								index
@@ -204,7 +219,9 @@ class MoveFileSettingTab extends PluginSettingTab {
 				});
 
 				// Add existing commands to Obsidian
-				this.plugin.addCustomCommand(moveFileConfig, index);
+				if(moveFileConfig.commandId) {
+					this.plugin.addCustomCommand(moveFileConfig, index);
+				}
 			}
 		);
 	}
