@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-note-mover",
+	"name": "obsidian-note-quick-move",
 	"version": "1.0.0",
-	"description": "This is a plugin for Obsidian for moving notes (https://obsidian.md)",
+	"description": "This is a plugin for Obsidian for moving notes Quickly to a folder using a comamnd (https://obsidian.md)",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
