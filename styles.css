@@ -6,16 +6,26 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
-.add-config-btn {
-    background-color: var(--interactive-accent) !important;
+.theme-light  {
+    .add-config-btn {
+        background-color: var(--interactive-accent) !important;
+        color: var(--text-on-accent) /* Add this line */
+    }
+
+    .delete-btn {
+        background-color: #e75951 !important;
+        color: var(--text-on-accent) /* Add this line */
+    }
 }
 
-.delete-btn {
-    background-color: #a73434 !important;
+.theme-dark {
+    .add-config-btn {
+        background-color: var(--interactive-accent) !important;
+        color: var(--text-on-accent) /* Add this line */
+    }
+
+    .delete-btn {
+        background-color:  #e75951 !important;
+    }
 }
 
-.save-btn {
-    background-color: #2e72cb !important;
-}
-
-  
