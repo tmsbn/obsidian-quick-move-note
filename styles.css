@@ -6,3 +6,18 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+.left-align-button {
+    float: left;
+}
+
+.delete-btn {
+    background-color: #a73434 !important;
+    float: left
+  }
+
+.save-btn {
+    background-color: #2e72cb !important;
+    float: left
+}
+
+  

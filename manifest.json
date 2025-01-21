@@ -1,6 +1,6 @@
 {
 	"id": "note-quick-move-plugin",
-	"name": "Quick Move Plugin",
+	"name": "Quick Move",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Quickly move notes to a specific folder using a command.",
