@@ -49,7 +49,10 @@ export default class MoveFilePlugin extends Plugin {
 		await this.saveData(this.settings);
 	}
 
-	async addCustomCommand(moveFileConfig: MoveFileConfig, index: number) : Promise<Command> {
+	async addCustomCommand(
+		moveFileConfig: MoveFileConfig,
+		index: number
+	): Promise<Command> {
 		return this.addCommand({
 			id: this.generate16CharHash(moveFileConfig.commandName + index),
 			name: moveFileConfig.commandName,
@@ -122,20 +125,22 @@ class MoveFileSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Add a configuration")
-			.setDesc("Create a command to quickly move to files to a particular folder")
+			.setDesc(
+				"Create a command to quickly move to files to a particular folder"
+			)
 			.addButton((button) => {
 				button
-				.setClass("add-config-btn")
-				.setButtonText("Add Config")
-				.onClick(async () => {
-					this.plugin.settings.moveFileConfigs.push({
-						commandName: "",
-						sourceFolderPath: "",
-						commandId: "",
+					.setClass("add-config-btn")
+					.setButtonText("Add Config")
+					.onClick(async () => {
+						this.plugin.settings.moveFileConfigs.push({
+							commandName: "",
+							sourceFolderPath: "",
+							commandId: "",
+						});
+						this.display();
+						new Notice(`Added Quick Move Configuration`);
 					});
-					this.display();
-					new Notice(`Added Quick Move Configuration`);
-				});
 			});
 
 		this.plugin.settings.moveFileConfigs.forEach(
@@ -161,9 +166,7 @@ class MoveFileSettingTab extends PluginSettingTab {
 					.setDesc("Relative path to the destination folder")
 					.addText((text) =>
 						text
-							.setPlaceholder(
-								"Path to Folder"
-							)
+							.setPlaceholder("Path to Folder")
 							.setValue(moveFileConfig.sourceFolderPath)
 							.onChange(async (value) => {
 								moveFileConfig.sourceFolderPath = value;
@@ -175,17 +178,24 @@ class MoveFileSettingTab extends PluginSettingTab {
 						.setClass("save-btn")
 						.setButtonText("Create")
 						.onClick(async () => {
-
 							// Remove configuraiton if exists
-							if(moveFileConfig.commandId) {
-								this.plugin.addCustomCommand(moveFileConfig, index);
+							if (moveFileConfig.commandId) {
+								this.plugin.addCustomCommand(
+									moveFileConfig,
+									index
+								);
 							}
 
-							if(moveFileConfig.commandName === "" || moveFileConfig.sourceFolderPath === "") {
+							if (moveFileConfig.commandName === "" || moveFileConfig.sourceFolderPath === "") {
+								new Notice(`Invalid configuration! Please fill in all fields.`);
+								return;
+							}
+
+							if (!this.isValidObsidianPath(this.app, moveFileConfig.sourceFolderPath)) {
 								new Notice(
-									`Invalid configuration! Please fill in all fields.`
+									`Path ${moveFileConfig.sourceFolderPath} is invalid! Please enter a valid path.`
 								);
-								return
+								return;
 							}
 
 							const command = await this.plugin.addCustomCommand(
@@ -195,7 +205,9 @@ class MoveFileSettingTab extends PluginSettingTab {
 
 							// We need to extract the command ID from the full command ID
 							moveFileConfig.commandId = command.id.split(":")[1];
-							console.log(`Adding command with ID: ${moveFileConfig.commandId}`);
+							console.log(
+								`Adding command with ID: ${moveFileConfig.commandId}`
+							);
 							await this.plugin.saveSettings();
 							new Notice(
 								`Saved "${moveFileConfig.commandName}" configuration`
@@ -211,7 +223,9 @@ class MoveFileSettingTab extends PluginSettingTab {
 								index,
 								1
 							);
-							console.log(`Removing command with ID: ${moveFileConfig.commandId}`);
+							console.log(
+								`Removing command with ID: ${moveFileConfig.commandId}`
+							);
 							this.plugin.removeCommand(moveFileConfig.commandId);
 							this.plugin.saveSettings();
 							this.display();
@@ -219,10 +233,41 @@ class MoveFileSettingTab extends PluginSettingTab {
 				});
 
 				// Add existing commands to Obsidian
-				if(moveFileConfig.commandId) {
+				if (moveFileConfig.commandId) {
 					this.plugin.addCustomCommand(moveFileConfig, index);
 				}
 			}
 		);
+	}
+
+	isValidObsidianPath(app: App, path: string): boolean {
+		// Check if the path is a string.
+		if (typeof path !== "string") {
+			return false;
+		}
+
+		// Check if the path is empty.
+		if (path === "") {
+			return false;
+		}
+
+		// Check if the path contains any invalid characters.
+		if (/[<>:"/\\|?*]/.test(path)) {
+			return false;
+		}
+
+		// Check if the path starts or ends with a space.
+		if (/^\s|\s$/.test(path)) {
+			return false;
+		}
+
+		// Check if a folder exists at the given path.
+		const file = app.vault.getAbstractFileByPath(path);
+		if (file instanceof TFolder) {
+			return true;
+		}
+
+
+		return false;
 	}
 }
