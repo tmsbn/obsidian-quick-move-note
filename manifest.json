@@ -1,5 +1,5 @@
 {
-	"id": "note-quick-move-plugin",
+	"id": "quick-move-node",
 	"name": "Quick Move",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
