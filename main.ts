@@ -126,7 +126,7 @@ class MoveFileSettingTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Add a configuration")
 			.setDesc(
-				"Create a command to quickly move to files to a particular folder"
+				"Create a command to quickly move files to a particular folder"
 			)
 			.addButton((button) => {
 				button
@@ -151,10 +151,10 @@ class MoveFileSettingTab extends PluginSettingTab {
 
 				new Setting(containerEl)
 					.setName("Name")
-					.setDesc("Name of th command to add. Eg: Mark as completed")
+					.setDesc("Name of the command to add. Eg: Mark as completed")
 					.addText((text) =>
 						text
-							.setPlaceholder("Cmmand name")
+							.setPlaceholder("Command name")
 							.setValue(moveFileConfig.commandName)
 							.onChange(async (value) => {
 								moveFileConfig.commandName = value;
@@ -183,8 +183,8 @@ class MoveFileSettingTab extends PluginSettingTab {
 								this.plugin.removeCommand(moveFileConfig.commandId);
 							}
 
-							if (moveFileConfig.commandName === "" || moveFileConfig.sourceFolderPath === "") {
-								new Notice(`Invalid configuration! Please fill in all fields.`);
+							if (moveFileConfig.commandName === "") {
+								new Notice(`Invalid configuration! Please specify a name for your custom command.`);
 								return;
 							}
 
@@ -203,7 +203,7 @@ class MoveFileSettingTab extends PluginSettingTab {
 							// We need to extract the command ID from the full command ID
 							moveFileConfig.commandId = command.id.split(":")[1];
 							console.log(
-								`Adding command with ID: ${moveFileConfig.commandId}`
+								`Adding command with ID: ${command.id}`
 							);
 							await this.plugin.saveSettings();
 							new Notice(
@@ -240,21 +240,6 @@ class MoveFileSettingTab extends PluginSettingTab {
 	isValidObsidianPath(app: App, path: string): boolean {
 		// Check if the path is a string.
 		if (typeof path !== "string") {
-			return false;
-		}
-
-		// Check if the path is empty.
-		if (path === "") {
-			return false;
-		}
-
-		// Check if the path contains any invalid characters.
-		if (/[<>:"/\\|?*]/.test(path)) {
-			return false;
-		}
-
-		// Check if the path starts or ends with a space.
-		if (/^\s|\s$/.test(path)) {
 			return false;
 		}
 

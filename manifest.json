@@ -3,7 +3,7 @@
 	"name": "Quick Move",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Quickly move notes to a specific folder using a command.",
+	"description": "Configure custom command to quickly move notes to a specific folder",
 	"author": "Obsidian",
 	"authorUrl": "https://obsidian.md",
 	"fundingUrl": "https://obsidian.md/pricing",
