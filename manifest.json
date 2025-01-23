@@ -4,8 +4,7 @@
 	"version": "1.0.1",
 	"minAppVersion": "0.15.0",
 	"description": "Configure custom command to quickly move notes to a specific folder",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"author": "Thomas Binu",
+	"authorUrl": "https://github.com/tmsbn",
 	"isDesktopOnly": false
 }
