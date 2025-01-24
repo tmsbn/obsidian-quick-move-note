@@ -119,10 +119,6 @@ class MoveFileSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
-		containerEl.createEl("h3", {
-			text: `Quick Move Configuration Settings`,
-		});
-
 		new Setting(containerEl)
 			.setName("Add a configuration")
 			.setDesc(
@@ -145,9 +141,11 @@ class MoveFileSettingTab extends PluginSettingTab {
 
 		this.plugin.settings.moveFileConfigs.forEach(
 			(moveFileConfig, index) => {
-				containerEl.createEl("h2", {
-					text: `Configuration ${index + 1}`,
-				});
+				// containerEl.createEl("h2", {
+				// 	text: `Configuration ${index + 1}`,
+				// });
+
+				new Setting(containerEl).setName('Configuration ' + (index + 1)).setHeading();
 
 				new Setting(containerEl)
 					.setName("Name")
