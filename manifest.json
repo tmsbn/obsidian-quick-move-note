@@ -1,7 +1,7 @@
 {
 	"id": "quick-move-note",
 	"name": "Quick Move",
-	"version": "1.0.6",
+	"version": "1.0.8",
 	"minAppVersion": "1.7.7",
 	"description": "Configure custom command to quickly move notes to a specific folder",
 	"author": "Thomas Binu",
