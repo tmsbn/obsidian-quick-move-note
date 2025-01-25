@@ -15,7 +15,7 @@ import * as crypto from "crypto";
 
 interface MoveFileConfig {
 	sourceFolderPath: string;
-	commandName: string;
+	configName: string;
 	commandId: string;
 }
 
@@ -54,8 +54,8 @@ export default class MoveFilePlugin extends Plugin {
 		index: number
 	): Promise<Command> {
 		return this.addCommand({
-			id: this.generate16CharHash(moveFileConfig.commandName + index),
-			name: moveFileConfig.commandName,
+			id: this.generate16CharHash(moveFileConfig.configName + index),
+			name: moveFileConfig.configName,
 			checkCallback: (checking: boolean) => {
 				const targetFolderPath = moveFileConfig.sourceFolderPath;
 				const activeFile = this.app.workspace.getActiveFile();
@@ -130,7 +130,7 @@ class MoveFileSettingTab extends PluginSettingTab {
 					.setButtonText("Add Config")
 					.onClick(async () => {
 						this.plugin.settings.moveFileConfigs.push({
-							commandName: "",
+							configName: "",
 							sourceFolderPath: "",
 							commandId: "",
 						});
@@ -153,9 +153,9 @@ class MoveFileSettingTab extends PluginSettingTab {
 					.addText((text) =>
 						text
 							.setPlaceholder("Command name")
-							.setValue(moveFileConfig.commandName)
+							.setValue(moveFileConfig.configName)
 							.onChange(async (value) => {
-								moveFileConfig.commandName = value;
+								moveFileConfig.configName = value;
 							})
 					);
 
@@ -181,7 +181,7 @@ class MoveFileSettingTab extends PluginSettingTab {
 								this.plugin.removeCommand(moveFileConfig.commandId);
 							}
 
-							if (moveFileConfig.commandName === "") {
+							if (moveFileConfig.configName === "") {
 								new Notice(`Invalid configuration! Please specify a name for your custom command.`);
 								return;
 							}
@@ -205,7 +205,7 @@ class MoveFileSettingTab extends PluginSettingTab {
 							);
 							await this.plugin.saveSettings();
 							new Notice(
-								`Saved "${moveFileConfig.commandName}" configuration`
+								`Saved "${moveFileConfig.configName}" configuration`
 							);
 						});
 				});
