@@ -11,8 +11,6 @@ import {
 
 import * as crypto from "crypto";
 
-// Remember to rename these classes and interfaces!
-
 interface MoveFileConfig {
 	sourceFolderPath: string;
 	configName: string;
@@ -121,9 +119,7 @@ class MoveFileSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Add a configuration")
-			.setDesc(
-				"Create a command to quickly move files to a particular folder"
-			)
+			.setDesc("Create a command to quickly move files to a particular folder")
 			.addButton((button) => {
 				button
 					.setClass("add-config-btn")
@@ -141,9 +137,6 @@ class MoveFileSettingTab extends PluginSettingTab {
 
 		this.plugin.settings.moveFileConfigs.forEach(
 			(moveFileConfig, index) => {
-				// containerEl.createEl("h2", {
-				// 	text: `Configuration ${index + 1}`,
-				// });
 
 				new Setting(containerEl).setName('Configuration ' + (index + 1)).setHeading();
 
@@ -176,7 +169,7 @@ class MoveFileSettingTab extends PluginSettingTab {
 						.setButtonText("Save")
 						.onClick(async () => {
 							
-							// Remove configuraiton if exists
+							// Remove configuration if exists
 							if (moveFileConfig.commandId) {
 								this.plugin.removeCommand(moveFileConfig.commandId);
 							}
@@ -200,13 +193,10 @@ class MoveFileSettingTab extends PluginSettingTab {
 
 							// We need to extract the command ID from the full command ID
 							moveFileConfig.commandId = command.id.split(":")[1];
-							console.log(
-								`Adding command with ID: ${command.id}`
-							);
+							console.log(`Adding command with ID: ${command.id}`);
+
 							await this.plugin.saveSettings();
-							new Notice(
-								`Saved "${moveFileConfig.configName}" configuration`
-							);
+							new Notice(`Saved "${moveFileConfig.configName}" configuration`);
 						});
 				});
 
@@ -214,13 +204,8 @@ class MoveFileSettingTab extends PluginSettingTab {
 					cb.setButtonText("Delete")
 						.setClass("delete-btn")
 						.onClick(() => {
-							this.plugin.settings.moveFileConfigs.splice(
-								index,
-								1
-							);
-							console.log(
-								`Removing command with ID: ${moveFileConfig.commandId}`
-							);
+							this.plugin.settings.moveFileConfigs.splice(index, 1);
+							console.log(`Removing command with ID: ${moveFileConfig.commandId}`);
 							this.plugin.removeCommand(moveFileConfig.commandId);
 							this.plugin.saveSettings();
 							this.display();
