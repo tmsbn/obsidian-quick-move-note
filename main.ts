@@ -131,7 +131,7 @@ class MoveFileSettingTab extends PluginSettingTab {
 							commandId: "",
 						});
 						this.display();
-						new Notice(`Added Quick Move Configuration`);
+						new Notice(`Added configuration`);
 					});
 			});
 

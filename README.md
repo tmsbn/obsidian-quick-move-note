@@ -26,6 +26,9 @@ This plugin is particularly useful if you have a workflow where you move notes t
 4. Set your desired name and target folder for your command. 
 5. Click 'Save'
 
+Congratulations! You can now quickly move files using custom commands. You can use plugins like the [Commander Plugin](https://github.com/phibr0/obsidian-commander) to add buttons to your UI to use these custom commands. 
+
+
 ![Settings page](/media/settings_page.png "Custom Commands")
 ![Settings page](/media/settings_page_light.png "Custom Commands")
 You can add multile configuration according to your workflow!
